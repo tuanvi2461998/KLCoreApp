@@ -1,13 +1,27 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
     <UserSecretsId>aspnet-KhoaLuanCoreApp-BDA138AB-D17B-4649-852F-ADB4257043FC</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="bower.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="6.1.1" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="2.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
-    <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.1.2" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.2.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\KhoaLuanCoreApp.Application\KhoaLuanCoreApp.Application.csproj" />
+    <ProjectReference Include="..\KhoaLuanCoreApp.Data.EF\KhoaLuanCoreApp.Data.EF.csproj" />
+    <ProjectReference Include="..\KhoaLuanCoreApp.Data\KhoaLuanCoreApp.Data.csproj" />
+    <ProjectReference Include="..\KhoaLuanCoreApp.Infrastructure\KhoaLuanCoreApp.Infrastructure.csproj" />
+    <ProjectReference Include="..\KhoaLuanCoreApp.Ultilities\KhoaLuanCoreApp.Ultilities.csproj" />
   </ItemGroup>
 
 </Project>
