@@ -19,6 +19,8 @@ using AutoMapper;
 using KhoaLuanCoreApp.Data.IRepositories;
 using KhoaLuanCoreApp.Application.Interface;
 using KhoaLuanCoreApp.Application.Implementation;
+using Microsoft.Extensions.Logging;
+using Newtonsoft.Json.Serialization;
 
 namespace KhoaLuanCoreApp
 {
@@ -78,15 +80,16 @@ namespace KhoaLuanCoreApp
             services.AddTransient<IProductCategoryService, ProductCategoryService>();
 
             services.AddTransient<DbInitializer>(); //Khởi tạo DbInitializer
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddMvc().AddJsonOptions(option => option.SerializerSettings.ContractResolver = new DefaultContractResolver());
 
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, DbInitializer dbInitializer)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, DbInitializer dbInitializer,ILoggerFactory loggerFactory)
         {
+            loggerFactory.AddFile("Logs/khoaluan-{Date}.txt");
             if (env.IsDevelopment())
-            {
+            {   
                 app.UseDeveloperExceptionPage();
                 app.UseDatabaseErrorPage();
             }
@@ -107,6 +110,8 @@ namespace KhoaLuanCoreApp
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
+                routes.MapRoute(name: "areaRoute",
+                     template: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
             });
             
         }
