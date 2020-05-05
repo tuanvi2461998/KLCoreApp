@@ -1,4 +1,5 @@
 ﻿var loginController = function () {
+
     this.initialize = function () {
         registerEvents();
     }
@@ -18,7 +19,7 @@
             }
         });
         $('#btnLogin').on('click', function (e) {
-            if ($('#frmLogin').validate()) {
+            if ($('#frmLogin').valid()) {
                 e.preventDefault();
                 var user = $('#txtUserName').val();
                 var password = $('#txtPassword').val();
@@ -42,7 +43,7 @@
                     window.location.href = "/Admin/Home/Index";
                 }
                 else {
-                    tedu.notify('Login failed', 'error');
+                    khoaluan.notify('Login failed', 'error');
                 }
             }
         })

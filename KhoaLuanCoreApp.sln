@@ -10,9 +10,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3 - Domain", "3 - Domain", "{37ECD803-55BF-436F-8A72-E3E4F7AAB7D8}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2 - Application", "2 - Application", "{F8F4CE1A-2989-4242-832F-FA637DB9FC93}"
-	ProjectSection(SolutionItems) = preProject
-		KhoaLuanCoreApp\Startup.cs = KhoaLuanCoreApp\Startup.cs
-	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4 - Infrastructure", "4 - Infrastructure", "{5B1C4AB1-57AA-42DB-8165-F567954B22B1}"
 EndProject

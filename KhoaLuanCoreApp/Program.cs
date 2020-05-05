@@ -1,21 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using KhoaLuanCoreApp.Data.EF;
+﻿using KhoaLuanCoreApp.Data.EF;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using System;
 
 namespace KhoaLuanCoreApp
 {
-    public class Program 
+    public class Program
     {
         public static void Main(string[] args)
-        {   
+        {
             var host = CreateWebHostBuilder(args).Build();
             using (var scope = host.Services.CreateScope())
             {
@@ -33,7 +28,6 @@ namespace KhoaLuanCoreApp
                 }
             }
             host.Run();
-
         }
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>

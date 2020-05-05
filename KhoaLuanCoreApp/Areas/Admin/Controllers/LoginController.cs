@@ -30,6 +30,7 @@ namespace KhoaLuanCoreApp.Areas.Admin.Controllers
         {
             return View();
         }
+
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
@@ -39,12 +40,11 @@ namespace KhoaLuanCoreApp.Areas.Admin.Controllers
             {
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-                var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
+                var result = await _signInManager.PasswordSignInAsync(model.UserName, model.Password, model.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
                     return new OkObjectResult(new GenericResult(true));
-                   
                 }
                 if (result.IsLockedOut)
                 {

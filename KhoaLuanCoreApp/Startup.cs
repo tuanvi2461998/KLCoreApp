@@ -21,6 +21,7 @@ using KhoaLuanCoreApp.Application.Interface;
 using KhoaLuanCoreApp.Application.Implementation;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Serialization;
+using KhoaLuanCoreApp.Helpers;
 
 namespace KhoaLuanCoreApp
 {
@@ -36,26 +37,26 @@ namespace KhoaLuanCoreApp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.Configure<CookiePolicyOptions>(options =>
-            {
-                // This lambda determines whether user consent for non-essential cookies is needed for a given request.
-                options.CheckConsentNeeded = context => true;
-                options.MinimumSameSitePolicy = SameSiteMode.None;
-            });
-
-
             services.AddDbContext<AppDbContext>(options =>   //Sử dụng DbContext của mình
               options.UseSqlServer(
                Configuration.GetConnectionString("DefaultConnection"), 
                o=>o.MigrationsAssembly("KhoaLuanCoreApp.Data.EF"))); //lệnh Sử dụng project hiện tại
-             services.AddIdentity<AppUser, AppRole>()
+
+            services.AddIdentity<AppUser, AppRole>()
                 .AddEntityFrameworkStores<AppDbContext>()
                 .AddDefaultTokenProviders();
+                
+            /*services.Configure<CookiePolicyOptions>(options =>
+            {
+                // This lambda determines whether user consent for non-essential cookies is needed for a given request.
+                options.CheckConsentNeeded = context => true;
+                options.MinimumSameSitePolicy = SameSiteMode.None;
+            });*/
 
-            services.AddAutoMapper();
 
-            services.AddScoped<UserManager<AppUser>, UserManager<AppUser>>();
-            services.AddScoped<RoleManager<AppRole>, RoleManager<AppRole>>();
+          
+
+            
             // Configure Identity
             services.Configure<IdentityOptions>(options =>
             {
@@ -65,14 +66,19 @@ namespace KhoaLuanCoreApp
                 options.Password.RequireNonAlphanumeric = false;
                 options.Password.RequireUppercase = false;
                 options.Password.RequireLowercase = false;
-
                 // Lockout settings
                 options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(30);
                 options.Lockout.MaxFailedAccessAttempts = 10;
-
                 // User settings
                 options.User.RequireUniqueEmail = true;
             });
+
+
+            services.AddAutoMapper();
+            //Add application service.
+            services.AddScoped<UserManager<AppUser>, UserManager<AppUser>>();
+            services.AddScoped<RoleManager<AppRole>, RoleManager<AppRole>>();
+
             services.AddSingleton(Mapper.Configuration);
             services.AddScoped<IMapper>(sp => new Mapper(sp.GetRequiredService<AutoMapper.IConfigurationProvider>(), sp.GetService));
 
@@ -80,14 +86,19 @@ namespace KhoaLuanCoreApp
             services.AddTransient<IProductCategoryService, ProductCategoryService>();
 
             services.AddTransient<DbInitializer>(); //Khởi tạo DbInitializer
+
+            services.AddScoped<IUserClaimsPrincipalFactory<AppUser>, CustomClaimsPrincipalFactory>();
+
+
             services.AddMvc().AddJsonOptions(option => option.SerializerSettings.ContractResolver = new DefaultContractResolver());
 
+           
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, DbInitializer dbInitializer,ILoggerFactory loggerFactory)
         {
-            loggerFactory.AddFile("Logs/khoaluan-{Date}.txt");
+            loggerFactory.AddFile("Logs/khoaluan-{Date}.txt"); //Ghi log file khi đăng nhập
             if (env.IsDevelopment())
             {   
                 app.UseDeveloperExceptionPage();
@@ -102,7 +113,6 @@ namespace KhoaLuanCoreApp
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
-
             app.UseAuthentication();
 
             app.UseMvc(routes =>
@@ -110,8 +120,9 @@ namespace KhoaLuanCoreApp
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
+
                 routes.MapRoute(name: "areaRoute",
-                     template: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+                        template: "{area:exists}/{controller=Login}/{action=Index}/{id?}");
             });
             
         }

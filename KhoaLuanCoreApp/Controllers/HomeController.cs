@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using KhoaLuanCoreApp.Models;
 using Microsoft.AspNetCore.Authorization;
+using KhoaLuanCoreApp.Extensions;
 
 namespace KhoaLuanCoreApp.Controllers
 {
@@ -14,9 +15,9 @@ namespace KhoaLuanCoreApp.Controllers
     {
         public IActionResult Index()
         {
+            
             return View();
         }
-
         public IActionResult About()
         {
             ViewData["Message"] = "Your application description page.";
